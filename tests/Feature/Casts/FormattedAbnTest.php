@@ -33,3 +33,18 @@ it('does not cast nulls', function () {
         'formatted_abn' => null,
     ]);
 });
+
+it('removes whitespace when setting', function () {
+    $abn = '12 345 678 901';
+
+    $user = User::factory()->create([
+        'formatted_abn' => $abn,
+    ]);
+
+    expect($user)
+        ->formatted_abn->toBe('12 345 678 901');
+
+    assertDatabaseHas('users', [
+        'formatted_abn' => '12345678901',
+    ]);
+});
